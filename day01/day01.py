@@ -1,6 +1,3 @@
-#sol01.py
-import sys
-
 def solution1(inputfile: str):
     sum = 0
     for line in open(inputfile).readlines():
@@ -37,6 +34,7 @@ def evalnumber(input: str):
         return '9'
     else:
         return 0
+
 
 def solution2(inputfile: str):
     sum = 0

@@ -1,67 +1,42 @@
-def solution1(inputfile: str):
-    sum = 0
-    for line in open(inputfile).readlines():
-        o = ''
-        for char in line:
-            if char.isdigit():
-                o += char
-        sum += int(o[0] + o[-1])
-    return sum
+import re
 
 
-def evalnumber(input: str):
-    if len(input) == 0:
-        return 0
-    if input[0].isdigit():
-        return input[0]
-    elif input.startswith("one"):
-        return '1'
-    elif input.startswith("two"):
-        return '2'
-    elif input.startswith("three"):
-        return '3'
-    elif input.startswith("four"):
-        return '4'
-    elif input.startswith("five"):
-        return '5'
-    elif input.startswith("six"):
-        return '6'
-    elif input.startswith("seven"):
-        return '7'
-    elif input.startswith("eight"):
-        return '8'
-    elif input.startswith("nine"):
-        return '9'
-    else:
-        return 0
+def solve(lines: list):
+    p1, p2 = [], []
+
+    nummap = {
+        "1": 1,
+        "2": 2,
+        "3": 3,
+        "4": 4,
+        "5": 5,
+        "6": 6,
+        "7": 7,
+        "8": 8,
+        "9": 9,
+        "one": 1,
+        "two": 2,
+        "three": 3,
+        "four": 4,
+        "five": 5,
+        "six": 6,
+        "seven": 7,
+        "eight": 8,
+        "nine": 9,
+    }
+    i = [re.findall(r"\d", x) for x in lines]
+    p1 = [int(x[0] + x[-1]) for x in i]
+
+    re_l = r"\d|one|two|three|four|five|six|seven|eight|nine"
+    re_r = r"\d|eno|owt|eerht|ruof|evif|xis|neves|thgie|enin"
+    lhs = [re.search(re_l, x).group() for x in lines]
+    rhs = [re.search(re_r, x[::-1]).group()[::-1] for x in lines]
+    p2 = [nummap[x[0]] * 10 + nummap[x[-1]] for x in zip(lhs, rhs)]
+
+    return sum(p1), sum(p2)
 
 
-def solution2(inputfile: str):
-    sum = 0
-    for line in open(inputfile).readlines():
-        left, right = 0, 0
-        i = 0
-        while True:
-            if left == 0:
-                left = evalnumber(line.strip()[i:]) 
-                i += 1
-            else:
-                break
-        i = -1
-        while True:
-            if right == 0:
-                right = evalnumber(line.strip()[i:])
-                i -= 1
-            else:
-                break
-        sum += int(left + right)
-    return sum
-
-        
 if __name__ == "__main__":
-    print(f"Test input 1: {solution1("day01_test1.txt")}")
-    print(f"Test input 2: {solution2("day01_test2.txt")}")
-
-    print(f"Real input 1: {solution1("day01_input.txt")}")
-    print(f"Real input 2: {solution2("day01_input.txt")}")
+    # print(solve([line.strip() for line in open("test2.txt").readlines()]))
+    print(solve([line.strip() for line in open("input.txt").readlines()]))
 
